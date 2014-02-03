@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+<TITLE>My Sample Database</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+	function Edit(DBNAME,DBKEY)
+	{
+		var x;
+		x = prompt("Enter the database password","Enter the database password");
+		window.location.href = "db.exe?REQ=EDITDETAILS&EDTKEY=" + DBKEY + "&DB=" + DBNAME + "&DBPASS="+x+"&T1=DESCRIPTION&T2=THUMBNAIL";
+	}
+	function cc()
+	{
+		var x;
+		x = prompt("Enter the database password","Enter the database password");
+		window.location.href = "db.exe?REQ=LIST&DB=cbm&DBPASS="+x+"&T1=DESCRIPTION&T2=THUMBNAIL";
+	}
+	function Add(DBNAME,DBKEY)
+	{
+		var x;
+		x = prompt("Enter the database password","Enter the database password");
+		window.location.href="db.exe?REQ=ADDDETAILS&EDTKEY=0&DB="+DBNAME+"&DBPASS="+x+"&T1=DESCRIPTION&T2=THUMBNAIL";
+	}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#0066FF">
+<TABLE WIDTH=100% BORDER=1>
+<TR>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample2&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample2
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample3&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample3
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample4&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample4
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample5&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample5
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample6&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample6
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample7&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample7
+</a>
+</TD>
+<TD WIDTH=12%>
+<a href="db.exe?REQ=HTML&DB=sample8&INPUTFILE=index.html">
+<FONT COLOR=WHITE><B>
+Sample8
+</a>
+</TD>
+</TABLE>
+<P>
+<a href="db.exe?REQ=HTML&DB=<#REQ=PARM&NAMED=DB>&INPUTFILE=index.html"><FONT COLOR="#FFFFFF"><B>Go back to View Mode</B></FONT></A>
+<BR>
+<BR>
+<BR>
+<FONT COLOR="#FFFFFF">This is my happy little table called: <B><#REQ=PARM&NAMED=DB></B></FONT>
+<P>
+<H2>
+<FONT COLOR=WHITE>
+<#REQ=IF&DBNAME=sample>The Original Sample<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample2>A Potential Sample2<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample3>A Potential Sample3<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample4>A Potential Sample4<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample5>A Potential Sample5<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample6>A Potential Sample6<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample7>A Potential Sample7<#REQ=ENDIF>
+<#REQ=IF&DBNAME=sample8>A Potential Sample8<#REQ=ENDIF>
+</FONT>
+</H2>
+<#REQ=SORT&SORTBY=THUMBNAIL&THENBY=DESCRIPTION>
+<TABLE WIDTH=100% BGCOLOR="#99FFFF">
+<TR BGCOLOR="#9999FF"><TD width=50%>Notes</TD><TD width=50%>Thumbnail Image URL</TD></TR>
+<#REQ=ROWLOOP>
+<TR><TD><A HREF="javascript:Edit('<#REQ=FIELD&T1=DBNAME>','<#REQ=FIELD&T1=DBKEY>');">
+<#REQ=FIELD&T1=DESCRIPTION>
+</A></TD>
+<TD><#REQ=FIELD&T1=THUMBNAIL></TD></TR>
+<#REQ=ENDLOOP>
+</TABLE><P>
+<P><BR><BR>
+</BODY>
+</HTML>
