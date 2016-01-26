@@ -14,10 +14,24 @@
    limitations under the License.
 */
 
-#include<iostream.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/types.h>
+#include <sys/stat.h>
+#include<unistd.h>
+#include <fcntl.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
+
+#include<iostream>
 #include<string.h>
 #include<stdio.h>
 #include<stdlib.h>
+
 
 char *myltoa(long x, char *mybuf, int len)
 {
@@ -40,11 +54,8 @@ char *myltoa(long x, char *mybuf, int len)
 		pos++;
 		buf[pos]=0;
 	}
-	int i=0;
-	for(i=strlen(buf)-1;i>=0;i--)
-		mybuf[strlen(buf)-i-1]=buf[i];
-	mybuf[strlen(buf)]=0;
-
+	size_t i=0;
+    strcpy(mybuf,buf);
 	return mybuf;
 }
 
@@ -100,8 +111,8 @@ class string
 	char *Right(int numchars);				// return the index of char c in string
 	char *Left(int numchars);				// return the index of char c in string
 	char *Mid(int numchars);				// return the index of char c in string
-    friend ostream &operator <<(ostream& o, string& s);   // stream out
-    friend istream &operator >>(istream& o, string& s);   // stream in
+    friend std::ostream &operator <<(std::ostream& o, string& s);   // stream out
+    friend std::istream &operator >>(std::istream& o, string& s);   // stream in
 };
 
 static int fout=-1;
@@ -872,7 +883,7 @@ char *ParseQuery(char *QSTRING, char *TAG)
 			while((locs = NewerQ.Find(BADCHR[i]))>=0)
 			{
 				char *left=NewerQ.Left(locs);
-				char *right=NewerQ.Mid(locs+strlen(BADCHR[i]));
+				char *right=NewerQ.Mid(locs+(int)strlen(BADCHR[i]));
 				NewerQ = left;
 				NewerQ = NewerQ + GODCHR[i];
 				NewerQ = NewerQ + right;
@@ -2055,12 +2066,12 @@ char *Encrypt(char *ENCRYPTME)
 		if (INTOME[S]==(char)0)
 			INTOME[S]=ENCRYPTME[S];
 		else
-		for(unsigned long F=S;F<strlen(FILTER);F+=strlen(ENCRYPTME))
+		for(unsigned long F=S;F<(unsigned long)strlen(FILTER);F+=(long)strlen(ENCRYPTME))
 		{
 			long X = ABCindex(INTOME[S]);
 			X = X + ABCindex(FILTER[F]);
 			if (X>=(long)strlen(ABCs))
-				X = X-strlen(ABCs);
+				X = X-(long)strlen(ABCs);
 			INTOME[S]=ABCs[X];
 		}
 		INTOME[S+1]=0;
@@ -2079,12 +2090,12 @@ char *Decrypt(char *DECRYPTME)
 		if (INTOME[S]==(char)0)
 			INTOME[S]=DECRYPTME[S];
 		else
-		for(unsigned long F=S;F<strlen(FILTER);F+=strlen(DECRYPTME))
+		for(unsigned long F=S;F<(unsigned long)strlen(FILTER);F+=(unsigned long)strlen(DECRYPTME))
 		{
 			long X = ABCindex(INTOME[S]);
 			X = X - ABCindex(FILTER[F]);
 			if (X<0)
-				X = X+strlen(ABCs);
+				X = X+(unsigned long)strlen(ABCs);
 			INTOME[S]=ABCs[X];
 		}
 		INTOME[S+1]=0;
@@ -2321,8 +2332,8 @@ void FreeTableCols(char ***ColTags, char ***ColPcts, DATA *data)
     int string::len()                   // get the length
     {
       if (s == NULL)
-	return 0;
-      return (strlen(s));
+    	return 0;
+      return (int)strlen(s);
     };
 
     char *string::buf()                   // get the buffer
@@ -2549,13 +2560,13 @@ void FreeTableCols(char ***ColTags, char ***ColPcts, DATA *data)
 		return buf;
 	};
 
-    ostream& operator <<(ostream& o, string& s2)    // stream out
+    std::ostream& operator <<(std::ostream& o, string& s2)    // stream out
     {
       printf("%s",s2.s);
       return o;
     };
 
-    istream& operator >>(istream& o, string& s2)    // stream in
+    std::istream& operator >>(std::istream& o, string& s2)    // stream in
     {
       return o;
     };
@@ -2797,11 +2808,26 @@ int main(int argn, char **argv, char **envp)
 {
 	if(fout>=0)
 		out=fopen("output.txt","w");
+
+#ifdef _WIN32
+    HANDLE lockFile = 
+       CreateFile(TEXT("cgidb.lock"), // open Two.txt
+                  GENERIC_WRITE,         // open for writing
+                  0,     
+                  NULL,                     // no security
+                  OPEN_ALWAYS,              // open or create
+                  FILE_ATTRIBUTE_NORMAL,    // normal file
+                  NULL); 
+#else
+    int lockFile = open("cgidb.lock",O_RDWR | O_CREAT, 0666);
+    lockf(lockFile,F_LOCK, 0);
+#endif
+
 	output("Content-type: text/html\n\n");
 
 	#if defined(DEBUG)
-	//	char *QUERYSTRING = "REQ=HTML&DBKEY=54&DB=cbmcomputers&INPUTFILE=details.html";
-	char *QUERYSTRING = "REQ=LIST&DB=sample&DBPASS=krebnatz&T1=THUMBNAIL";
+		char *QUERYSTRING = "REQ=HTML&DBKEY=54&DB=cbmcomputers&INPUTFILE=details.html";
+	//char *QUERYSTRING = "REQ=LIST&DB=sample&DBPASS=krebnatz&T1=THUMBNAIL";
 	#else
 	char *QUERYSTRING = getenv("QUERY_STRING");
 	#endif
@@ -2824,11 +2850,10 @@ int main(int argn, char **argv, char **envp)
 	}
 	else
 	{
-
 		DBindex = ReadDB(&DefData,&DBmain,DelMeDB);
-
 		if(DBindex>=0)
 			ParseRequests(DefData, &DBmain, QUERYSTRING);
+
 		delete DefData;
 	}
 
@@ -2842,6 +2867,11 @@ int main(int argn, char **argv, char **envp)
 	free(PotPass);
 	free(DelMeDB);
 
+#ifdef _WIN32
+    CloseHandle(lockFile);
+#else
+    close(lockFile);
+#endif
+printf("8\n");
 	return DBindex;
 }
-
