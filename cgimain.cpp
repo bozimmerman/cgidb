@@ -2810,14 +2810,14 @@ int main(int argn, char **argv, char **envp)
 		out=fopen("output.txt","w");
 
 #ifdef _WIN32
-    HANDLE lockFile = 
+    HANDLE lockFile =
        CreateFile(TEXT("cgidb.lock"), // open Two.txt
                   GENERIC_WRITE,         // open for writing
-                  0,     
+                  0,
                   NULL,                     // no security
                   OPEN_ALWAYS,              // open or create
                   FILE_ATTRIBUTE_NORMAL,    // normal file
-                  NULL); 
+                  NULL);
 #else
     int lockFile = open("cgidb.lock",O_RDWR | O_CREAT, 0666);
     lockf(lockFile,F_LOCK, 0);
@@ -2872,6 +2872,5 @@ int main(int argn, char **argv, char **envp)
 #else
     close(lockFile);
 #endif
-printf("8\n");
 	return DBindex;
 }
