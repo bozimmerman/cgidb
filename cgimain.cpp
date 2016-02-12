@@ -1989,52 +1989,52 @@ void ParseRequests(DATA *data, struct DBTYPE *DBmain, char *QUERYSTRING)
 	char *REQ = ParseQuery(QUERYSTRING,"REQ");
 
 	if (strcmp(REQ,"LIST")==0)
-			List(data, QUERYSTRING);
+		List(data, QUERYSTRING);
 	else
 	if (strcmp(REQ,"VIEW")==0)
-			List(data, QUERYSTRING);
+		List(data, QUERYSTRING);
 	else
 	if (strcmp(REQ,"EDIT")==0)
-			EditAll(data, DBmain, QUERYSTRING);
+		EditAll(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"DETAILS")==0)
-			Details(data, QUERYSTRING);
+		Details(data, QUERYSTRING);
 	else
 	if (strcmp(REQ,"EDITDETAILS")==0)
-			EditDetails(data, DBmain, QUERYSTRING);
+		EditDetails(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"ADDDETAILS")==0)
-			AddDetails(data, DBmain, QUERYSTRING);
+		AddDetails(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"CHANGEROW")==0)
-			ChangeRow(data, DBmain, QUERYSTRING);
+		ChangeRow(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"ADDROW")==0)
-			AddRow(data, DBmain, QUERYSTRING);
+		AddRow(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"DELROW")==0)
-			DelRow(data, DBmain, QUERYSTRING);
+		DelRow(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"TAGS")==0)
-			TagDetails(data, DBmain, QUERYSTRING);
+		TagDetails(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"DELTAG")==0)
-			DelTag(data, DBmain, QUERYSTRING);
+		DelTag(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"MODIFY")==0)
-			EditTags(data, DBmain, QUERYSTRING);
+		EditTags(data, DBmain, QUERYSTRING);
 	else
 	if (strcmp(REQ,"SORT")==0)
-			SortBy(data, QUERYSTRING);
+		SortBy(data, QUERYSTRING);
 	else
 	if (strcmp(REQ,"SELECT")==0)
-			Select(data, QUERYSTRING);
+		Select(data, QUERYSTRING);
 	else
 	if (strcmp(REQ,"FIELD")==0)
-			Field(data, QUERYSTRING);
+		Field(data, QUERYSTRING);
 	else
 	if (strcmp(REQ,"HTML")==0)
-			DoPage(data, DBmain, QUERYSTRING);
+		DoPage(data, DBmain, QUERYSTRING);
 	else
 	{
 		output("'");
