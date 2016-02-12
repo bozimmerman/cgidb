@@ -54,7 +54,9 @@ char *myltoa(long x, char *mybuf, int len)
 		pos++;
 		buf[pos]=0;
 	}
-	size_t i=0;
+	size_t i=(size_t)pos;
+	for(;pos>=0;pos--)
+		mybuf[i-pos]=buf[pos];
     strcpy(mybuf,buf);
 	return mybuf;
 }
