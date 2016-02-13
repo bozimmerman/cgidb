@@ -54,11 +54,10 @@ char *myltoa(long x, char *mybuf, int len)
 		pos++;
 		buf[pos]=0;
 	}
-	size_t i=(size_t)pos;
-	for(;pos>=0;pos--)
-		mybuf[i-pos]=buf[pos];
-    strcpy(mybuf,buf);
-	return mybuf;
+    for(int i=0;i<pos;i++)
+            mybuf[i]=buf[pos-i-1];
+    mybuf[pos]=0;
+    return mybuf;
 }
 
 char *malltoa(long x)
